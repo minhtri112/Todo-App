@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -27,5 +28,15 @@ public interface TodoRepository extends JpaRepository<Todo,Integer> {
             @Param("status") Status status,
             @Param("priority") Priority priority,
             @Param("title") String title
+    );
+
+    @Query("SELECT t FROM Todo t WHERE t.isDeleted = false " +
+            "AND (:id IS NULL OR t.id != :id) " +
+            "AND t.startTime < :endTime " +
+            "AND t.endTime > :startTime")
+    List<Todo> existsOverlappingTodos(
+            @Param("id") Integer id,
+            @Param("startTime") LocalDateTime startTime,
+            @Param("endTime") LocalDateTime endTime
     );
 }
