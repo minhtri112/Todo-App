@@ -34,14 +34,13 @@
 # volumes:
 #   db_data:
 
-
 services:
   backend:
-    image: minhtri112/todo-backend:latest # Nhớ thay đúng tên user Docker Hub của bạn
+    image: minhtri112/todo-backend:latest
     container_name: todo_backend
     restart: unless-stopped
     env_file:
-      - .env.docker 
+      - .env.docker
     environment:
       DB_HOST: ${AWS_DB_HOST}
       DB_PORT: ${AWS_DB_PORT}

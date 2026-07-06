@@ -74,6 +74,18 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public Todo createTodo(TodoRequest todoRequest) {
+        if(todoRequest.getStartTime() != null && todoRequest.getEndTime() != null){
+            if (todoRequest.getStartTime().isAfter(todoRequest.getEndTime())) {
+                throw new BadRequestException("Thời gian kết thúc không thể trước thời gian bắt đầu.");
+            }
+
+            if(todoRequest.getStartTime().isBefore(LocalDateTime.now())){
+                throw new BadRequestException("Thời gian bắt đầu không thể trong quá khứ.");
+            }
+        }
+        if(todoRequest.getStatus() != Status.PENDING){
+            throw new BadRequestException("Công việc được tạo phải ở trạng thái PENDING.");
+        }
         // Kiem tra tinh hop le cua du lieu
         validateTodoRequest(null,todoRequest);
 
@@ -138,14 +150,6 @@ public class ToDoServiceImpl implements ToDoService {
     // ham kiem tra tinh hop le cua du lieu truoc khi tao hoac chinh sua todo
     private void validateTodoRequest(Integer id,TodoRequest todoRequest) {
         if(todoRequest.getStartTime() != null && todoRequest.getEndTime() != null){
-            if (todoRequest.getStartTime().isAfter(todoRequest.getEndTime())) {
-                throw new BadRequestException("Thời gian kết thúc không thể trước thời gian bắt đầu.");
-            }
-
-            if(todoRequest.getStartTime().isBefore(LocalDateTime.now())){
-                throw new BadRequestException("Thời gian bắt đầu không thể trong quá khứ.");
-            }
-
             if(todoRequest.getEndTime().isBefore(LocalDateTime.now())){
                 throw new BadRequestException("Thời gian kết thúc không thể trong quá khứ.");
             }

@@ -6,7 +6,7 @@ import {
   statusOptions,
 } from "../../utils/statusAndPriorityMap";
 import { X } from "lucide-react";
-import { parseISO, format, isValid } from "date-fns";
+import { buildDateTimeValue, splitDateTime } from "../../utils/dateUtils";
 
 const initialFormState = {
   title: "",
@@ -19,37 +19,7 @@ const initialFormState = {
   endTime: "",
 };
 
-const buildDateTimeValue = (dateValue, timeValue) => {
-  if (!dateValue || !timeValue) {
-    return "";
-  }
 
-  return `${dateValue}T${timeValue}:00`;
-};
-
-const splitDateTime = (dateTimeValue) => {
-  if (!dateTimeValue) {
-    return { date: "", time: "" };
-  }
-
-  const parsedDate = parseISO(dateTimeValue);
-
-  if (isValid(parsedDate)) {
-    return {
-      date: format(parsedDate, "yyyy-MM-dd"),
-      time: format(parsedDate, "HH:mm"),
-    };
-  }
-
-  if (typeof dateTimeValue === "string" && dateTimeValue.length >= 16) {
-    return {
-      date: dateTimeValue.slice(0, 10),
-      time: dateTimeValue.slice(11, 16),
-    };
-  }
-
-  return { date: "", time: "" };
-};
 
 function CreateTodoModal({
   open,
@@ -177,9 +147,9 @@ function CreateTodoModal({
       if (!response?.success) {
         throw new Error(
           response?.message ||
-            (todoToEdit?.id
-              ? "Không thể cập nhật công việc."
-              : "Không thể tạo công việc mới."),
+          (todoToEdit?.id
+            ? "Không thể cập nhật công việc."
+            : "Không thể tạo công việc mới."),
         );
       }
 
@@ -273,18 +243,26 @@ function CreateTodoModal({
               <label className="mb-1 block text-sm font-medium text-slate-700">
                 Trạng thái
               </label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
-              >
-                {modalStatusOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+              {todoToEdit?.id ? (
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
+                >
+                  {modalStatusOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  readOnly
+                  value="Đang chờ (PENDING)"
+                  className="w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 cursor-not-allowed"
+                />
+              )}
             </div>
 
             <div>
