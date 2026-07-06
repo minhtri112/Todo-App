@@ -1,0 +1,33 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: todo_db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: todo_db
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_USER: todo_user
+      MARIADB_PASSWORD: todo_pass
+    ports:
+      - "3305:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  backend:
+    build:
+      context: .
+    container_name: todo_backend
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_NAME: todo_db
+      DB_USERNAME: todo_user
+      DB_PASSWORD: todo_pass
+    ports:
+      - "8080:8080"
+volumes:
+  db_data:

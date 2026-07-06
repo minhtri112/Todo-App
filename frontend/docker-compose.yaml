@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://host.docker.internal:8080/api}
+    container_name: todo_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
