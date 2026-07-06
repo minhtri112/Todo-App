@@ -1,51 +1,49 @@
-# services:
-#   mariadb:
-#     image: mariadb:11.4
-#     container_name: todo_db
-#     restart: unless-stopped
-#     environment:
-#       MARIADB_DATABASE: todo_db
-#       MARIADB_ROOT_PASSWORD: root
-#       MARIADB_USER: todo_user
-#       MARIADB_PASSWORD: todo_pass
-#     ports:
-#       - "3305:3306"
-#     volumes:
-#       - db_data:/var/lib/mysql
-#       - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+ services:
+   mariadb:
+     image: mariadb:11.4
+     container_name: todo_db
+     restart: unless-stopped
+     environment:
+       MARIADB_DATABASE: todo_db
+       MARIADB_ROOT_PASSWORD: root
+       MARIADB_USER: todo_user
+       MARIADB_PASSWORD: todo_pass
+     ports:
+       - "3305:3306"
+     volumes:
+       - db_data:/var/lib/mysql
+       - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
-#   backend:
-#     build:
-#       context: .
-#     container_name: todo_backend
-#     restart: unless-stopped
-#     depends_on:
-#       - mariadb
-#     env_file:
-#       - .env.docker 
-#     environment:
-#       DB_HOST: ${AWS_DB_HOST}
-#       DB_PORT: ${AWS_DB_PORT}
-#       DB_NAME: ${AWS_DB_NAME}
-#       DB_USERNAME: ${AWS_DB_USER}
-#       DB_PASSWORD: ${AWS_DB_PASSWORD}
-#     ports:
-#       - "8080:8080"
-# volumes:
-#   db_data:
+   backend:
+     build:
+       context: .
+     container_name: todo_backend
+     restart: unless-stopped
+     depends_on:
+       - mariadb
+     env_file:
+       - .env.docker
+     environment:
+       DB_HOST: ${DB_HOST}
+       DB_PORT: ${DB_PORT}
+       DB_NAME: ${DB_NAME}
+       DB_USERNAME: ${DB_USER}
+       DB_PASSWORD: ${DB_PASSWORD}
+     ports:
+       - "8080:8080"
+ volumes:
+   db_data:
 
-services:
-  backend:
-    image: minhtri112/todo-backend:latest
-    container_name: todo_backend
-    restart: unless-stopped
-    env_file:
-      - .env.docker
-    environment:
-      DB_HOST: ${AWS_DB_HOST}
-      DB_PORT: ${AWS_DB_PORT}
-      DB_NAME: ${AWS_DB_NAME}
-      DB_USERNAME: ${AWS_DB_USER}
-      DB_PASSWORD: ${AWS_DB_PASSWORD}
-    ports:
-      - "8080:8080"
+#services:
+#  backend:
+#    image: minhtri112/todo-backend:latest
+#    container_name: todo_backend
+#    restart: unless-stopped
+#    environment:
+#      DB_HOST: ${AWS_DB_HOST}
+#      DB_PORT: ${AWS_DB_PORT}
+#      DB_NAME: ${AWS_DB_NAME}
+#      DB_USERNAME: ${AWS_DB_USER}
+#      DB_PASSWORD: ${AWS_DB_PASSWORD}
+#    ports:
+#      - "8080:8080"

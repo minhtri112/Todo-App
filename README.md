@@ -126,22 +126,14 @@ docker logs -f todo_backend
 
 ### 3. Chạy Frontend bằng Docker
 
-**Bước 1:** Build image và chạy container (thay `<IP_backend>` bằng IP thực của máy chạy backend):
+**Bước 1:** Build image và chạy container:
 
 ```bash
 cd frontend
-docker build --build-arg VITE_API_URL=http://<IP_backend>:8080/api -t todo-frontend .
-docker run -d -p 80:80 --name todo_frontend todo-frontend
+docker compose up -d --build
 ```
 
-Hoặc dùng `docker compose`:
-
-```bash
-cd frontend
-docker compose up -d
-```
-
-> Frontend chạy tại: `http://localhost:80`
+> Frontend chạy tại: `http://localhost:3000`
 
 ---
 
@@ -183,7 +175,7 @@ Todo-App/
 
 | Method | Endpoint | Mô tả |
 |--------|----------|-------|
-| `GET` | `/api/todos` | Lấy danh sách công việc |
+| `GET` | `/api/todos/week` | Lấy danh sách công việc tuần hiện tại |
 | `POST` | `/api/todos` | Tạo công việc mới (status phải là `PENDING`) |
 | `PUT` | `/api/todos/{id}` | Cập nhật công việc |
 | `DELETE` | `/api/todos/{id}` | Xóa công việc |
