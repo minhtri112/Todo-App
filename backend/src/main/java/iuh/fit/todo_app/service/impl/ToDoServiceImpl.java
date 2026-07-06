@@ -5,6 +5,7 @@ import iuh.fit.todo_app.entity.Todo;
 import iuh.fit.todo_app.enums.Priority;
 import iuh.fit.todo_app.enums.Status;
 import iuh.fit.todo_app.exception.BadRequestException;
+import iuh.fit.todo_app.exception.ResourceNotFoundException;
 import iuh.fit.todo_app.repository.TodoRepository;
 import iuh.fit.todo_app.service.ToDoService;
 import jakarta.transaction.Transactional;
@@ -97,7 +98,7 @@ public class ToDoServiceImpl implements ToDoService {
     public Todo editTodo(Integer id, TodoRequest todoRequest) {
         Todo existingTodo = todoRepository.findById(id)
                 .filter(todo -> !todo.isDeleted())
-                .orElseThrow(() -> new BadRequestException("Công việc không tồn tại."));
+                .orElseThrow(() -> new ResourceNotFoundException("Công việc không tồn tại."));
 
         validateTodoRequest(id, todoRequest);
 
@@ -120,10 +121,17 @@ public class ToDoServiceImpl implements ToDoService {
     public void deleteTodo(Integer id) {
         Todo existingTodo = todoRepository.findById(id)
                 .filter(todo -> !todo.isDeleted())
-                .orElseThrow(() -> new BadRequestException("Công việc không tồn tại."));
+                .orElseThrow(() -> new ResourceNotFoundException("Công việc không tồn tại."));
 
         existingTodo.setDeleted(true);
         todoRepository.save(existingTodo);
+    }
+
+    @Override
+    public Todo getTodoById(Integer id) {
+        return todoRepository.findById(id)
+                .filter(todo -> !todo.isDeleted())
+                .orElseThrow(() -> new ResourceNotFoundException("Công việc không tồn tại."));
     }
 
 

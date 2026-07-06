@@ -33,6 +33,12 @@ public class ToDoController {
         return ResponseEntity.ok(ApiResponse.success(weekPlan, "Lay todos theo tuan thanh cong"));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Todo>> getTodoById(@PathVariable Integer id){
+        Todo todo = todoService.getTodoById(id);
+        return ResponseEntity.ok(ApiResponse.success(todo, "Lay todo theo id thanh cong"));
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<Todo>> createTodo(@Valid @RequestBody TodoRequest todoRequest) {
         Todo createdTodo = todoService.createTodo(todoRequest);

@@ -18,4 +18,6 @@ public interface ToDoService {
     Todo editTodo(Integer id, TodoRequest todoRequest);
 
     void deleteTodo(Integer id);
+
+    Todo getTodoById(Integer id);
 }
