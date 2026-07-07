@@ -36,8 +36,8 @@ jobs:
           host: ${{ secrets.BACKEND_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "backend/docker-compose.yml"
-          target: "/home/ec2-user/todo_app/backend/"
+          source: "docker-compose.backend.yml"
+          target: "/home/ec2-user/todo_app/"
           strip_components: 0
 
       # 3. Kết nối vào EC2 và ra lệnh tải image mới về chạy
@@ -48,9 +48,8 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            mkdir -p /home/ec2-user/todo_app
-            cp /home/ec2-user/todo_app/backend/docker-compose.yml /home/ec2-user/todo_app/docker-compose.yml
             cd /home/ec2-user/todo_app
+            mv docker-compose.backend.yml docker-compose.yml
             docker compose pull backend
             docker compose up -d backend
             docker image prune -f

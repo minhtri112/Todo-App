@@ -34,16 +34,3 @@
  volumes:
    db_data:
 
-#services:
-#  backend:
-#    image: minhtri112/todo-backend:latest
-#    container_name: todo_backend
-#    restart: unless-stopped
-#    environment:
-#      DB_HOST: ${AWS_DB_HOST}
-#      DB_PORT: ${AWS_DB_PORT}
-#      DB_NAME: ${AWS_DB_NAME}
-#      DB_USERNAME: ${AWS_DB_USER}
-#      DB_PASSWORD: ${AWS_DB_PASSWORD}
-#    ports:
-#      - "8080:8080"

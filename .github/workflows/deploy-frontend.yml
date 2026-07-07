@@ -37,8 +37,8 @@ jobs:
           host: ${{ secrets.FRONTEND_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "frontend/docker-compose.yaml"
-          target: "/home/ec2-user/todo_app/frontend/"
+          source: "docker-compose.frontend.yml"
+          target: "/home/ec2-user/todo_app/"
           strip_components: 0
 
       # 3. Kết nối vào EC2 Frontend và ra lệnh chạy
@@ -49,9 +49,8 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            mkdir -p /home/ec2-user/todo_app
-            cp /home/ec2-user/todo_app/frontend/docker-compose.yaml /home/ec2-user/todo_app/docker-compose.yaml
             cd /home/ec2-user/todo_app
+            mv docker-compose.backend.yml docker-compose.yml
             docker compose pull frontend
             docker compose up -d frontend
             docker image prune -f
