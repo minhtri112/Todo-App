@@ -50,6 +50,7 @@ jobs:
           script: |
             cd /home/ec2-user/todo_app
             mv docker-compose.backend.yml docker-compose.yml
-            docker compose pull backend
-            docker compose up -d backend
+            docker-compose pull backend
+            docker-compose up -d backend
+            # Dọn dẹp image cũ
             docker image prune -f

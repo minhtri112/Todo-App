@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ec2-user/todo_app
-            mv docker-compose.backend.yml docker-compose.yml
-            docker compose pull frontend
-            docker compose up -d frontend
+            mv docker-compose.frontend.yml docker-compose.yml
+            docker-compose pull frontend
+            docker-compose up -d frontend
             docker image prune -f
