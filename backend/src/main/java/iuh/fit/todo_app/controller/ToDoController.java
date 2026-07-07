@@ -29,6 +29,7 @@ public class ToDoController {
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "week", defaultValue = "0") int weekOffset
     ) {
+        System.out.println("weekOffset: " + weekOffset);
         Map<LocalDate, Map<String, List<Todo>>> weekPlan = todoService.getTodosByWeekAndFilters(status, priority, title, weekOffset);
         return ResponseEntity.ok(ApiResponse.success(weekPlan, "Lay todos theo tuan thanh cong"));
     }

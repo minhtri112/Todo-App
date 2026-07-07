@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 
 function AppRoutes() {
+  console.log('AppRoutes rendered');
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
